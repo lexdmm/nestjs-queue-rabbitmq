@@ -13,7 +13,7 @@ This module always accesses two ports, both in development and production enviro
 
 The environment variables used **in Producer** are listed below and can be seen in **.env-template**:
 ```bash
-# portas RMQ
+# RMQ port
 PORT_RMQ=5672
 
 # app port
@@ -22,7 +22,7 @@ PORT=3000
 # Queue names identify their function, think of a good name when entering a new one.
 QUEUE_NAME='translation_prompts'
 
-#Url rabbitMQ authentication
+# Url rabbitMQ authentication
 RABBITMQ_USER='guest'
 RABBITMQ_PASSWORD='guest'
 RABBITMQ_HOST='localhost'
@@ -37,14 +37,14 @@ This service always has three doors, both in development and production environm
 The environment variables used **in Consumer** are listed below and can be seen in **.env-template**:
 ```bash
 # RABBITMQ
-#portas da fila para o consumer
+# consumer's port
 PORT_RMQ=5672
 PORT_RMQ_MANAGEMENT=15672
 
-#Nome da fila
+# Queue name
 QUEUE_NAME='translation_prompts'
 
-#credencias da fila, obviamente produção não é assim
+# Queue credentials, obviously production is not like that
 RABBITMQ_USER='guest'
 RABBITMQ_PASSWORD='guest'
 RABBITMQ_HOST='localhost'
@@ -54,26 +54,33 @@ The consumer has a control to receive requests from the producer, it is located 
 
 ## Connections
 #### 1 - Install project dependencies
+Since there are two modules, each must be installed and run individually.
+Run the command below to install the dependencies within each folder:
 ```bash
+# ../consumer
+$ yarn install
+```
+```bash
+# ../producer
 $ yarn install
 ```
 
 ## Run app
-
 Before running the Queue service, you must have Docker installed and run the command below in the root of the project to upload the RabbitMQ services.
 ```bash
-# para subir o container
+# to run the containers
 $ docker compose up
 ```
 ```bash
-# para destruir o container
+# to destroy the container
 $ docker compose down
 ```
-Once the RabbitMQ service is active in docker, run the command below for development in each project (Consumer and Producer).
+Once the RabbitMQ service is active in docker, run the command below for development in each project (Consumer and Producer). You can improve this by copying everything into the container with dockerfile if you prefer.
 ```bash
-# watch mode development
+# ../consumer
 $ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+```
+```bash
+# ../producer
+$ yarn run start:dev
 ```
